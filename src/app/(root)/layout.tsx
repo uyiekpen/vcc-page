@@ -21,7 +21,7 @@ const genZMillennialElements = [
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative w-full min-h-screen overflow-y-auto font-montserrat">
+    <div className="relative w-full min-h-screen overflow-y-auto font-Montserrat">
       <div className="absolute inset-0 opacity-10 pointer-events-none z-0">
         <div className="w-full h-full grid grid-cols-24 grid-rows-24">
           {Array.from({ length: 24 * 24 }).map((_, i) => (

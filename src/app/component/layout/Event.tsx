@@ -41,13 +41,18 @@ export function EventStats({
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+    <section className="py-16 bg-gray-50" id="event">
+      <div className="text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          EVENT
+        </h2>
+      </div>
+      <div className="container mx-auto px-4 mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <stat.icon className="w-8 h-8 text-blue-600" />
+              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <stat.icon className="w-8 h-8 text-purple-600" />
               </div>
               <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
                 {stat.value.toLocaleString()}

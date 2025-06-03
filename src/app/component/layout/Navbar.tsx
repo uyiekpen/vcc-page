@@ -22,28 +22,29 @@ const Navbar = () => {
       </div>
 
       <nav className="hidden md:flex space-x-8 text-gray-700 dark:text-gray-300">
-        <a onClick={() => handleScroll("about")}>
-          <h3>About</h3>
+        <a href="/">
+          <h3>Home</h3>
         </a>
-        <a href="#">
-          <h3> Events</h3>
+        <a href="/pods">
+          <h3> Pods</h3>
         </a>
-        <a href="#">
-          <h3> Project</h3>
+        <a href="/roles">
+          <h3> Roles</h3>
         </a>
-        <a href="#">
-          <h3> Resources</h3>
-        </a>
+      
       </nav>
 
       <div className="flex items-center space-x-2 md:space-x-3">
         <Button className="p-4 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white">
           <Moon />
         </Button>
+        <Button className="px-8 py-4 border border-gray-300 dark:border-gray-600 rounded-[50px] hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white">
+          <Link href="/signup"> Sign Up </Link>{" "}
+        </Button>
+
         <Button className="px-8 py-4 bg-black dark:bg-white dark:text-black text-white rounded-[50px] hover:bg-gray-800 dark:hover:bg-gray-200">
           <Link href="/mail"> Join the waitlist </Link>{" "}
         </Button>
-      
       </div>
     </header>
   );
