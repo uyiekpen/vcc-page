@@ -3,12 +3,18 @@ import { Hero } from "../component/layout/Hero";
 import { Footer } from "../component/layout/Footer";
 import { EventStats } from "../component/layout/Event";
 import { About } from "../component/layout/About";
+import LivePodFeed from "../component/layout/LivePod";
+import SuccessMetrics from "../component/layout/SuccessMetrics";
+import Testimonials from "../component/layout/Creator";
 
 const page = () => {
   return (
     <div>
       <Hero />
-      <About/>
+      <About />
+      <LivePodFeed />
+      <SuccessMetrics />
+      <Testimonials />
     </div>
   );
 };
