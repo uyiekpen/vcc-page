@@ -1,22 +1,23 @@
 "use client";
 
+import { Footer } from "../component/layout/Footer";
 import Navbar from "../component/layout/Navbar";
-  const genZMillennialElements = [
-    "🔥",
-    "💅",
-    "💀",
-    "✨",
-    "🤠",
-    "🧃",
-    "👾",
-    "😎",
-    "🪩",
-    "🌈",
-    "🎧",
-    "🫶",
-    "💻",
-    "🦄",
-  ];
+const genZMillennialElements = [
+  "🔥",
+  "💅",
+  "💀",
+  "✨",
+  "🤠",
+  "🧃",
+  "👾",
+  "😎",
+  "🪩",
+  "🌈",
+  "🎧",
+  "🫶",
+  "💻",
+  "🦄",
+];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -55,6 +56,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Navbar />
 
       <main>{children}</main>
+      <Footer />
     </div>
   );
 };

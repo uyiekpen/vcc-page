@@ -1,7 +1,6 @@
 import { Code, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import Button from "../ui/Button";
-import { WaitlistForm } from "../ui/Waitlist";
 
 export function Hero() {
   return (
@@ -29,15 +28,15 @@ export function Hero() {
             come together to learn, build amazing projects, and grow their
             skills through collaboration and mentorship.
           </p>
-          {/* <div className="mt-10 flex items-center justify-center gap-x-6">
+          <div className="mt-10 flex items-center justify-center gap-x-6">
             <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-4 rounded-lg font-semibold w-[200px]">
               Join the Club
             </Button>
             <Button className="px-8 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white w-[200px]">
               Learn More
             </Button>
-          </div> */}
-          <WaitlistForm/>
+          </div> 
+          {/* <WaitlistForm/> */}
           
           <div className="mt-16 flex justify-center gap-8 text-gray-400">
             <div className="flex items-center gap-2">
