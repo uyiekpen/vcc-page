@@ -12,7 +12,7 @@ export function Hero() {
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-300 ring-1 ring-white/10 hover:ring-white/20">
               Join 500+ developers in our community{" "}
               <Link
-                href="#newsletter"
+                href="/signup"
                 className="font-semibold text-purple-400"
               >
                 <span className="absolute inset-0" aria-hidden="true" />
