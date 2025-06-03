@@ -1,88 +1,35 @@
 "use client";
-import { useState } from "react";
+
+import { SignUp } from "@clerk/nextjs";
+import React from "react";
 
 export default function SignupPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert(`Signed up with:\nName: ${formData.name}\nEmail: ${formData.email}`);
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow">
-        <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            />
-          </div>
+    <div className="relative min-h-screen bg-gradient-to-br from-purple-100 via-pink-100 to-blue-100 flex items-center justify-center overflow-hidden">
+      {/* Floating blobs */}
+      <div className="absolute w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float1 -top-20 -left-20"></div>
+      <div className="absolute w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float2 top-20 right-10"></div>
+      <div className="absolute w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-float3 bottom-0 left-1/2 -translate-x-1/2"></div>
 
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity"
-          >
-            Sign Up
-          </button>
-        </form>
+      {/* Glass card */}
+      <div className="backdrop-blur-xl bg-white/60 border border-white/30 rounded-3xl shadow-lg p-8 w-full max-w-md z-10">
+        <SignUp
+          appearance={{
+            elements: {
+              card: "shadow-none bg-transparent",
+              formButtonPrimary:
+                "bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:from-pink-600 hover:to-purple-600",
+              headerTitle: "text-gray-900",
+              headerSubtitle: "text-gray-600",
+              formFieldLabel: "text-gray-700",
+              formFieldInput:
+                "bg-white/70 backdrop-blur-md border border-gray-300 text-gray-900",
+            },
+            variables: {
+              colorPrimary: "#9333ea",
+            },
+          }}
+        />
       </div>
     </div>
   );
