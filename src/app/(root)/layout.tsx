@@ -35,7 +35,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               style={{
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
-                "--rotate": `${Math.random() * 360}deg`,
+                ["--rotate" as any]: `${Math.random() * 360}deg`,
                 animation: `float ${
                   3 + Math.random() * 8
                 }s ease-in-out infinite alternate`,
