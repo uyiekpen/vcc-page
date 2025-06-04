@@ -29,13 +29,13 @@ export function About() {
   ];
 
   return (
-    <section className="py-24 sm:py-32" id="about">
+    <section className="py-24 sm:py-32 dark:bg-black" id="about">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
             Why Join Our Coding Club?
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-6 text-lg leading-8 text-gray-600 dark:font-extrabold">
             We're more than just a club – we're a community dedicated to
             fostering growth, innovation, and collaboration among developers of
             all skill levels.
@@ -52,10 +52,12 @@ export function About() {
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100">
                     <feature.icon className="h-6 w-6 text-purple-600" />
                   </div>
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:font-extrabold">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
+                  <p className="text-sm text-gray-600 dark:font-bold">
+                    {feature.description}
+                  </p>
                 </div>
               </div>
             ))}

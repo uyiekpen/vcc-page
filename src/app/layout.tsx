@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,14 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${poppins.variable} ${montserrat.variable} font-sans`}
-        >
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <head></head>
+      <body className={`${poppins.variable} ${montserrat.variable} font-sans`}>
+        {children}
+      </body>
+    </html>
   );
 }

@@ -21,8 +21,8 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <div className="py-12 bg-gray-50 rounded-xl px-4 sm:px-6 md:px-8">
-      <h2 className="text-xl sm:text-2xl font-semibold text-center mb-8 sm:mb-10 text-gray-900">
+    <div className="py-12 bg-gray-50  px-4 sm:px-6 md:px-8 dark:bg-black">
+      <h2 className="text-xl sm:text-2xl font-semibold text-center mb-8 sm:mb-10 text-gray-900  dark:text-white">
         What Creators Are Saying
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">

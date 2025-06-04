@@ -20,7 +20,7 @@ export default function LivePodFeed() {
   }, []);
 
   return (
-    <div className="bg-purple-50 border border-purple-200 p-4 rounded-lg text-sm text-purple-700 text-center">
+    <div className="bg-purple-50 border border-purple-200 p-4  text-sm text-purple-700 text-center">
       <p className="animate-fade transition-all duration-300">
         {sampleUpdates[index]}
       </p>

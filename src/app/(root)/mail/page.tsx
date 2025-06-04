@@ -2,21 +2,27 @@ import { WaitlistForm } from "@/app/component/ui/contact";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div
+      className="min-h-screen flex items-center justify-center p-4 
+  bg-gradient-to-br from-blue-50 to-indigo-100 
+  dark:bg-gradient-to-br dark:from-gray-900 dark:to-black"
+    >
       <div className="w-full max-w-4xl">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
+        <div className="text-center mt-8">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 dark:text-white">
             Something Amazing is Coming
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-[18px] text-gray-600 max-w-2xl mx-auto">
             We're building the next generation platform that will revolutionize
             how you work. Join our waitlist to get early access and be part of
             the journey.
           </p>
         </div>
 
-        <WaitlistForm />
-
+        <div className="mt-8">
+          {" "}
+          <WaitlistForm />
+        </div>
         {/* <div className="mt-12 grid md:grid-cols-3 gap-8 text-center">
           <div className="space-y-2">
             <div className="text-2xl font-bold text-primary">🚀</div>

@@ -1,37 +1,40 @@
-// components/DarkModeToggle.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import Button from "./Button";
 
 export default function DarkModeToggle() {
   const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
+    setMounted(true);
+
+    const savedTheme = localStorage.getItem("theme");
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    const shouldUseDark = storedTheme ? storedTheme === "dark" : prefersDark;
+    const shouldBeDark = savedTheme === "dark" || (!savedTheme && prefersDark);
 
-    document.documentElement.classList.toggle("dark", shouldUseDark);
-    setIsDark(shouldUseDark);
+    setIsDark(shouldBeDark);
+    document.documentElement.classList.toggle("dark", shouldBeDark);
   }, []);
 
-  function toggleDarkMode() {
-    const newMode = !isDark;
-    setIsDark(newMode);
-    document.documentElement.classList.toggle("dark", newMode);
-    localStorage.setItem("theme", newMode ? "dark" : "light");
-  }
+  const toggleTheme = () => {
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+    localStorage.setItem("theme", newIsDark ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", newIsDark);
+  };
+
+  if (!mounted) return null;
 
   return (
-    <Button
-      onClick={toggleDarkMode}
-      className="p-4 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-100 text-black dark:hover:bg-gray-800 dark:text-white"
+    <button
+      onClick={toggleTheme}
+      className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
     >
-      {isDark ? <Sun /> : <Moon />}
-    </Button>
+      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+    </button>
   );
 }

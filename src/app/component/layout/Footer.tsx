@@ -3,7 +3,7 @@ import { Github, Twitter, Linkedin, Mail } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gray-900 text-white mt-10">
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
@@ -32,25 +32,25 @@ export function Footer() {
             <h4 className="text-sm font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <Link href="#" className="hover:text-white">
-                  About Us
+                <Link href="/" className="hover:text-white">
+                  Home{" "}
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white">
-                  Events
+                <Link href="/pods" className="hover:text-white">
+                  Pod{" "}
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-white">
-                  Projects
+                <Link href="/roles" className="hover:text-white">
+                  Roles{" "}
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="#" className="hover:text-white">
                   Resources
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
