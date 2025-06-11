@@ -1,6 +1,19 @@
 "use client";
+import { supabase } from "@/app/lib/supbase";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { FiGithub, FiLoader, FiEye, FiEyeOff, FiX } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
+import ErrorModal from "@/app/component/ui/ErrorModal";
+
+type FormErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+};
 
 export default function SignupPage() {
   const router = useRouter();
@@ -10,36 +23,140 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOAuthLoading, setIsOAuthLoading] = useState({
+    github: false,
+    google: false,
+  });
+  const [modalError, setModalError] = useState<string | null>(null);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const strongPasswordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (!strongPasswordRegex.test(formData.password)) {
+      newErrors.password =
+        "Password must be at least 8 characters with uppercase, lowercase, number, and symbol";
+    }
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+      newErrors.confirmPassword = "Passwords do not match";
     }
-    ("/onboarding");
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: { name: formData.name },
+        },
+      });
+
+      if (error) throw error;
+
+      toast.success("Account created successfully!");
+      setShowWelcomeModal(true);
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      setModalError(error.message || "An error occurred during signup");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOAuthSignup = async (provider: "github" | "google") => {
+    setIsOAuthLoading((prev) => ({ ...prev, [provider]: true }));
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/onboarding`,
+        },
+      });
+
+      if (error) throw error;
+    } catch (error: any) {
+      console.error(`${provider} signup error:`, error);
+      setModalError(error.message || `Error signing up with ${provider}`);
+    } finally {
+      setIsOAuthLoading((prev) => ({ ...prev, [provider]: false }));
+    }
+  };
+
+  const handleContinueToDashboard = () => {
+    setShowWelcomeModal(false);
     router.push("/onboarding");
-
-    alert(`Signed up with:\nName: ${formData.name}\nEmail: ${formData.email}`);
-    // Here you would typically submit form data to your backend
-  };
-
-  // Placeholder functions for OAuth sign-in
-  const handleGitHubSignup = () => {
-    alert("GitHub signup clicked (implement OAuth flow here)");
-  };
-
-  const handleGoogleSignup = () => {
-    alert("Google signup clicked (implement OAuth flow here)");
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  px-4 dark:bg-black mt-10">
+    <div className="min-h-screen flex items-center justify-center px-4 dark:bg-black mt-10">
+      {/* Welcome Modal */}
+      {showWelcomeModal && (
+        <div className="fixed inset-0 bg-white/10 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Welcome to Your Dashboard!
+              </h2>
+              <button
+                onClick={handleContinueToDashboard}
+                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+              >
+                <FiX size={24} />
+              </button>
+            </div>
+            <p className="text-gray-700 dark:text-gray-300 mb-6">
+              Your account has been successfully created. We're excited to have
+              you on board! Click continue to start your onboarding journey.
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={handleContinueToDashboard}
+                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Signup Form */}
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow dark:bg-gray-900 py-8">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
@@ -47,87 +164,135 @@ export default function SignupPage() {
           </h1>
           <p className="text-gray-700 dark:text-gray-300">Create an Account</p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-6">
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name */}
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Name
             </label>
             <input
-              id="name"
               name="name"
-              type="text"
-              required
               value={formData.name}
               onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className={`w-full border ${
+                errors.name
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-600"
+              } rounded-lg px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500`}
             />
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name}</p>
+            )}
           </div>
 
+          {/* Email */}
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Email
             </label>
             <input
-              id="email"
               name="email"
               type="email"
-              required
               value={formData.email}
               onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              className={`w-full border ${
+                errors.email
+                  ? "border-red-500"
+                  : "border-gray-300 dark:border-gray-600"
+              } rounded-lg px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500`}
             />
+            {errors.email && (
+              <p className="text-sm text-red-500">{errors.email}</p>
+            )}
           </div>
 
+          {/* Password */}
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            />
+            <div className="relative">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={handleChange}
+                className={`w-full border ${
+                  errors.password
+                    ? "border-red-500"
+                    : "border-gray-300 dark:border-gray-600"
+                } rounded-lg px-4 py-3 pr-10 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
+            {errors.password && (
+              <p className="text-sm text-red-500">{errors.password}</p>
+            )}
           </div>
+
+          {/* Confirm Password */}
           <div>
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Confirm Password
             </label>
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              required
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            />
+            <div className="relative">
+              <input
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={`w-full border ${
+                  errors.confirmPassword
+                    ? "border-red-500"
+                    : "border-gray-300 dark:border-gray-600"
+                } rounded-lg px-4 py-3 pr-10 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-pink-500`}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-300"
+              >
+                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className="text-sm text-red-500">{errors.confirmPassword}</p>
+            )}
           </div>
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity"
+            disabled={isLoading}
+            className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity flex justify-center items-center gap-2 disabled:opacity-70"
           >
-            Sign Up
+            {isLoading ? (
+              <>
+                <FiLoader className="animate-spin" /> Processing...
+              </>
+            ) : (
+              "Sign Up"
+            )}
           </button>
+
+          <p className="text-center text-sm">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="text-pink-500 hover:underline font-medium"
+            >
+              Sign in
+            </Link>
+          </p>
         </form>
 
-        {/* Or separator */}
+        {/* Separator */}
         <div className="flex items-center my-6">
           <hr className="flex-grow border-gray-300 dark:border-gray-600" />
           <span className="mx-3 text-gray-500 dark:text-gray-400 text-sm">
@@ -137,58 +302,45 @@ export default function SignupPage() {
         </div>
 
         {/* OAuth Buttons */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <button
-            onClick={handleGitHubSignup}
-            className="w-full flex items-center justify-center space-x-2 border border-gray-700 rounded-lg py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            onClick={() => handleOAuthSignup("github")}
+            disabled={isOAuthLoading.github}
+            className="w-full flex items-center justify-center gap-2 border border-gray-700 rounded-lg py-2.5 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition disabled:opacity-70"
           >
-            {/* GitHub Icon */}
-            <svg
-              className="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12 0C5.373 0 0 5.373 0 12a12 12 0 008.207 11.385c.6.11.82-.26.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.39-1.333-1.76-1.333-1.76-1.09-.745.082-.73.082-.73 1.204.085 1.838 1.237 1.838 1.237 1.07 1.834 2.806 1.304 3.49.997.11-.776.42-1.304.763-1.605-2.665-.3-5.466-1.332-5.466-5.932 0-1.31.47-2.382 1.236-3.222-.124-.303-.536-1.523.117-3.176 0 0 1.008-.323 3.3 1.23a11.52 11.52 0 016 0c2.29-1.553 3.297-1.23 3.297-1.23.654 1.653.243 2.873.12 3.176.77.84 1.235 1.912 1.235 3.222 0 4.61-2.804 5.63-5.475 5.922.43.372.814 1.103.814 2.222 0 1.606-.015 2.896-.015 3.287 0 .32.216.694.825.576A12.003 12.003 0 0024 12c0-6.627-5.373-12-12-12z"
-              />
-            </svg>
-            <span>Sign up with GitHub</span>
+            {isOAuthLoading.github ? (
+              <FiLoader className="animate-spin" />
+            ) : (
+              <>
+                <FiGithub className="w-5 h-5" />
+                <span>Sign up with GitHub</span>
+              </>
+            )}
           </button>
 
           <button
-            onClick={handleGoogleSignup}
-            className="w-full flex items-center justify-center space-x-2 border border-gray-700 rounded-lg py-2 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            onClick={() => handleOAuthSignup("google")}
+            disabled={isOAuthLoading.google}
+            className="w-full flex items-center justify-center gap-2 border border-gray-700 rounded-lg py-2.5 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 transition disabled:opacity-70"
           >
-            {/* Google Icon */}
-            <svg
-              className="w-5 h-5"
-              viewBox="0 0 533.5 544.3"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M533.5 278.4c0-18.6-1.5-36.5-4.4-53.9H272v102h146.9c-6.3 34-25.4 62.9-54.3 82.4v68.1h87.7c51.3-47.2 80.2-117 80.2-198.6z"
-                fill="#4285F4"
-              />
-              <path
-                d="M272 544.3c73.7 0 135.6-24.4 180.8-66.2l-87.7-68.1c-24.4 16.4-55.7 26-93.1 26-71.5 0-132.2-48.3-154-113.3H29.9v70.9C75 485.1 167.5 544.3 272 544.3z"
-                fill="#34A853"
-              />
-              <path
-                d="M118 324.7c-10.4-30.8-10.4-64 0-94.8v-70.9H29.9c-38.2 75.7-38.2 166.1 0 241.8l88.1-76.1z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M272 107.7c39.9 0 75.7 13.7 103.9 40.7l77.7-77.7C405.6 24.3 344 0 272 0 167.5 0 75 59.2 29.9 148.3l88.1 70.9c21.8-65 82.5-113.3 154-113.3z"
-                fill="#EA4335"
-              />
-            </svg>
-            <span>Sign up with Google</span>
+            {isOAuthLoading.google ? (
+              <FiLoader className="animate-spin" />
+            ) : (
+              <>
+                <FcGoogle className="w-5 h-5" />
+                <span>Sign up with Google</span>
+              </>
+            )}
           </button>
         </div>
       </div>
+
+      {/* Error Modal */}
+      <ErrorModal
+        isOpen={!!modalError}
+        message={modalError || ""}
+        onClose={() => setModalError(null)}
+      />
     </div>
   );
 }
