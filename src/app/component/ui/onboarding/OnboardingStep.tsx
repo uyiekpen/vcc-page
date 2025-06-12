@@ -40,7 +40,7 @@ import {
   Tag,
 } from "lucide-react";
 import { supabase } from "@/app/lib/supbase";
-import { Button } from "../button";
+import { Button } from "@/app/component/ui/button";
 
 // Utility function to generate proper UUIDs
 const generateUUID = () => {
