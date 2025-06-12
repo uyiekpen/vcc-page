@@ -1,6 +1,8 @@
 "use client";
 
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/app/lib/supbase";
 import Button from "../ui/ButtonNew";
 import Link from "next/link";
 
@@ -9,12 +11,32 @@ interface OnboardingNavType {
 }
 
 const OnBoardingNav: React.FC<OnboardingNavType> = ({ className }) => {
-  const supabase = useSupabaseClient();
-  const user = useUser();
+  const router = useRouter();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    // Check existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      if (event === "SIGNED_OUT") {
+        router.refresh();
+      }
+      return Promise.resolve(); // Explicitly return a Promise
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/login"; // Or wherever you want to redirect
+    router.push("/login");
   };
 
   return (

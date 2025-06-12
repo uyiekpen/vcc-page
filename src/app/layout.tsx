@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { useState, useEffect, SetStateAction } from "react";
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
-import { createClient } from "./lib/supbasebrowser";
+import { Session } from "@supabase/supabase-js";
+import { createClient } from "./lib/supbaseServer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,13 +24,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [supabase] = useState(() => createClient());
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ }) => {
+      setSession(session);
+    });
+
+    // Set up auth state listener
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event: any, session: SetStateAction<Session | null>) => {
+      setSession(session);
+    });
+
+    // Cleanup function
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, [supabase]);
 
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${montserrat.variable} font-sans`}>
-        <SessionContextProvider supabaseClient={supabase}>
-          {children}
-        </SessionContextProvider>
+        {children}
       </body>
     </html>
   );
