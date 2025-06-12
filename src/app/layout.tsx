@@ -4,7 +4,7 @@ import { useState, useEffect, SetStateAction } from "react";
 import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Session } from "@supabase/supabase-js";
-import { createClient } from "./lib/supbaseServer";
+import { createClient } from "./lib/supbasebrowser";
 
 const poppins = Poppins({
   subsets: ["latin"],
