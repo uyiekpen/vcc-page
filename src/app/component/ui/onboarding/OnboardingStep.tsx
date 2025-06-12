@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import { Badge } from "@/app/component/ui/badge";
 import {
   Card,
   CardContent,
@@ -8,41 +9,35 @@ import {
   CardHeader,
   CardTitle,
 } from "@/app/component/ui/card";
+import { Checkbox } from "@/app/component/ui/checkbox";
 import { Input } from "@/app/component/ui/input";
 import { Label } from "@/app/component/ui/label";
-import { Textarea } from "@/app/component/ui/textarea";
-import { Badge } from "@/app/component/ui/badge";
 import { Progress } from "@/app/component/ui/progress";
-import { Separator } from "@/app/component/ui/separator";
 import { RadioGroup, RadioGroupItem } from "@/app/component/ui/radio-group";
-import { Checkbox } from "@/app/component/ui/checkbox";
-import { useRouter } from "next/navigation";
+import { Separator } from "@/app/component/ui/separator";
+import { Textarea } from "@/app/component/ui/textarea";
+import { supabase } from "@/app/lib/supbase";
 import {
-  Github,
-  User,
-  Code,
-  Briefcase,
-  CheckCircle,
-  ChevronRight,
-  ChevronLeft,
-  Star,
-  Plus,
-  X,
-  ExternalLink,
-  Zap,
-  Target,
   Award,
   BookOpen,
+  Briefcase,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Code,
+  ExternalLink,
+  Github,
+  Plus,
+  Star,
+  Target,
+  User,
   Users as UsersIcon,
-  Mail,
-  Settings,
-  Send,
-  Tag,
+  X,
+  Zap
 } from "lucide-react";
-import { supabase } from "@/app/lib/supbase";
+import { useRouter } from "next/navigation";
 import { Button } from "@/app/component/ui/button";
 
-// Utility function to generate proper UUIDs
 const generateUUID = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
