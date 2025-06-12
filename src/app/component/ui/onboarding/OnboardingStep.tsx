@@ -33,10 +33,10 @@ import {
   User,
   Users as UsersIcon,
   X,
-  Zap
+  Zap,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/app/component/ui/button";
+import { Button } from "@/app/component/layout/button";
 
 const generateUUID = () => {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
