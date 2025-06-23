@@ -11,10 +11,10 @@ export default function SuccessMetrics() {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="bg-white dark:bg-gray-800 shadow-sm rounded-md p-8 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow hover:border-red-300 dark:hover:border-[#C64AE2] cursor-pointer"
+          className="bg-gradient-to-r from-purple-500 to-pink-500  dark:bg-gray-800 shadow-sm rounded-md p-8 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow hover:border-red-300 dark:hover:border-[#C64AE2] cursor-pointer"
         >
-          <p className="text-3xl font-bold text-[#C64AE2]">{stat.value}</p>
-          <p className="text-gray-600 mt-2 dark:text-white dark:font-bold">
+          <p className="text-3xl font-bold text-white">{stat.value}</p>
+          <p className="text-white mt-2 dark:text-white dark:font-bold">
             {stat.label}
           </p>
         </div>

@@ -1,4 +1,7 @@
 // app/not-found.tsx
+
+export const dynamic = "force-dynamic";
+
 export default function NotFound() {
   return (
     <div className="text-center py-32">
