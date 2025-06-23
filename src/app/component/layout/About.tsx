@@ -35,7 +35,7 @@ export function About() {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white">
             Why Join Our Coding Club?
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600 dark:font-extrabold">
+          <p className="mt-6 text-lg leading-8 text-gray-600 dark:font-extrabold dark:text-white">
             We're more than just a club – we're a community dedicated to
             fostering growth, innovation, and collaboration among developers of
             all skill levels.
@@ -52,10 +52,10 @@ export function About() {
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-purple-100">
                     <feature.icon className="h-6 w-6 text-purple-600" />
                   </div>
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:font-extrabold">
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:font-extrabold dark:text-white">
                     {feature.title}
                   </h3>
-                  <p className="text-sm text-gray-600 dark:font-bold">
+                  <p className="text-sm text-gray-600 dark:font-bold dark:text-white">
                     {feature.description}
                   </p>
                 </div>
