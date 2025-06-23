@@ -41,25 +41,25 @@ const OnBoardingNav: React.FC<OnboardingNavType> = ({ className }) => {
 
   return (
     <header
-      className={`p-4 md:p-6 flex justify-between items-center relative z-10 font-montserrat bg-white dark:bg-black transition-colors duration-300 ${className}`}
+      className={`p-4 md:p-6 flex justify-between items-center relative z-10 font-montserrat bg-white  transition-colors duration-300 ${className}`}
     >
       <div className="flex items-center space-x-2">
         <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full"></div>
-        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-black dark:text-white">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-black ">
           <Link href="/">Vibe.</Link>
         </h1>
       </div>
 
       <div className="flex items-center space-x-2 md:space-x-3">
         {user && (
-          <div className="text-sm md:text-base text-gray-700 dark:text-gray-200">
+          <div className="text-sm md:text-base text-gray-700 ">
             {user.user_metadata?.name || user.email}
           </div>
         )}
 
         <Button
           onClick={handleLogout}
-          className="px-8 py-4 bg-black dark:bg-white dark:text-black text-white rounded-[50px] hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
+          className="px-8 py-4 bg-black d  text-white rounded-[50px] hover:bg-gray-800  transition-colors"
         >
           Logout
         </Button>

@@ -12,7 +12,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-4 dark:text-white">
             Something Amazing is Coming
           </h1>
-          <p className="text-[18px] text-gray-600 max-w-2xl mx-auto">
+          <p className="text-[18px] text-gray-600 max-w-2xl mx-auto dark:text-white">
             We're building the next generation platform that will revolutionize
             how you work. Join our waitlist to get early access and be part of
             the journey.

@@ -17,24 +17,24 @@ export function WaitlistForm() {
     return (
       <div className="w-full max-w-md mx-auto bg-white dark:bg-gray-900 rounded-lg shadow-lg border dark:border-gray-700">
         <div className="flex flex-col items-center justify-center gap-4 p-8">
-          <CheckCircle className="w-16 h-16 text-green-500 dark:text-green-400" />
+          <CheckCircle className="w-16 h-16 text-[#A423E7] dark:text-[#A423E7]" />
           <div className="text-center">
-            <h3 className="text-lg font-semibold text-green-700 dark:text-green-400 mb-2">
+            <h3 className="text-lg font-semibold text-[#A423E7] dark:text-[#A423E7] mb-2">
               You're on the list!
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-300">
               {state.message}
             </p>
-            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900 rounded-md">
-              <p className="text-xs text-blue-700 dark:text-blue-400">
+            <div className="mt-4 p-3 bg-blue-50 dark:bg-[#A423E7] rounded-md">
+              <p className="text-xs text-blue-700 dark:text-white">
                 📧 Check your email inbox (and spam folder) for a confirmation
                 message.
               </p>
             </div>
-            <span>
+            <span className="pt-2">
               <Link
                 href="/"
-                className="text-blue-600 dark:text-blue-400 hover:underline"
+                className="text-blue-600 dark:text-white hover:underline "
               >
                 Go back Home
               </Link>

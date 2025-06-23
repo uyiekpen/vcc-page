@@ -161,6 +161,7 @@ const onboardingSteps = [
 ];
 
 export default function DeveloperOnboarding() {
+  const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [profileData, setProfileData] = useState<ProfileData>({
     name: "",
@@ -414,10 +415,23 @@ export default function DeveloperOnboarding() {
     return Math.round(score);
   };
 
+  ("use client");
+  
+
   const nextStep = async () => {
     if (currentStep < totalSteps) {
-      await saveData();
-      setCurrentStep(currentStep + 1);
+      try {
+        setLoading(true);
+        await saveData();
+        setCurrentStep((prev) => prev + 1);
+      } catch (error) {
+        console.error("Save failed:", error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Final step — redirect to dashboard
+      router.push("/dashboard");
     }
   };
 
@@ -1047,10 +1061,15 @@ export default function DeveloperOnboarding() {
 
                 <Button
                   onClick={nextStep}
-                  disabled={currentStep === totalSteps}
+                  disabled={loading}
+                  className="border flex items-center"
                 >
-                  {currentStep === totalSteps ? "Complete" : "Next"}
-                  <ChevronRight className="h-4 w-4 ml-2" />
+                  {loading
+                    ? "Saving..."
+                    : currentStep === totalSteps
+                    ? "Complete"
+                    : "Next"}
+                  {!loading && <ChevronRight className="h-4 w-4 ml-2" />}
                 </Button>
               </div>
             </CardContent>

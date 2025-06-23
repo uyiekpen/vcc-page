@@ -281,7 +281,7 @@ export default function SignupPage() {
             )}
           </button>
 
-          <p className="text-center text-sm">
+          <p className="text-center text-sm dark:text-white">
             Already have an account?{" "}
             <Link
               href="/login"

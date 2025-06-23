@@ -92,7 +92,7 @@ export default function RoleQuiz() {
           {/* Questions */}
           {questions.map(({ id, text, options }) => (
             <div key={id} className="mb-8 w-full">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+              <h2 className="text-xl font-semibold mb-4 text-gray-900  dark:text-white">
                 {text}
               </h2>
               <div className="flex flex-col gap-3">
@@ -102,9 +102,9 @@ export default function RoleQuiz() {
                     <button
                       key={role}
                       onClick={() => handleOptionSelect(id, role)}
-                      className={`text-left px-4 py-3 rounded-md border transition ${
+                      className={`text-left px-4 py-3 rounded-md border transition dark:text-white ${
                         selected
-                          ? "bg-purple-600 text-white border-purple-600"
+                          ? "bg-purple-600 text-white  border-purple-600"
                           : "border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                       }`}
                     >

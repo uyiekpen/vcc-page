@@ -29,13 +29,13 @@ export default function Testimonials() {
         {testimonials.map((t, idx) => (
           <div
             key={idx}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 sm:p-8 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow hover:border-red-300 dark:hover:border-red-500 cursor-pointer"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 sm:p-8 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow hover:border-[#C64AE2] dark:hover:border-[#C64AE2] cursor-pointer"
           >
             <p className="text-gray-800 dark:text-gray-200 italic mb-4 text-sm sm:text-base">
               “{t.quote}”
             </p>
             <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 font-medium">
-              — {t.name}, <span className="text-purple-600">{t.role}</span>
+              — {t.name}, <span className="text-[#C64AE2]">{t.role}</span>
             </div>
           </div>
         ))}
