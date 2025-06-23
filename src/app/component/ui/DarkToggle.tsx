@@ -24,7 +24,12 @@ export default function DarkModeToggle() {
     const newIsDark = !isDark;
     setIsDark(newIsDark);
     localStorage.setItem("theme", newIsDark ? "dark" : "light");
-    document.documentElement.classList.toggle("dark", newIsDark);
+
+    if (newIsDark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   };
 
   if (!mounted) return null;
@@ -32,9 +37,9 @@ export default function DarkModeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+      className="p-2 rounded-full border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white text-black"
     >
-      {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+      {isDark ? <Sun className="w-5 h-5 " /> : <Moon className="w-5 h-5" />}
     </button>
   );
 }
