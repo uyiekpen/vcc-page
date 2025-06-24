@@ -5,6 +5,7 @@ import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Session } from "@supabase/supabase-js";
 import { createClient } from "./lib/supbasebrowser";
+import { ThemeProvider } from "./provider/theme-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,16 +29,18 @@ export default function RootLayout({
 
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession().then(({ }) => {
+    supabase.auth.getSession().then(({}) => {
       setSession(session);
     });
 
     // Set up auth state listener
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event: any, session: SetStateAction<Session | null>) => {
-      setSession(session);
-    });
+    } = supabase.auth.onAuthStateChange(
+      (_event: any, session: SetStateAction<Session | null>) => {
+        setSession(session);
+      }
+    );
 
     // Cleanup function
     return () => {
@@ -48,7 +51,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.variable} ${montserrat.variable} font-sans`}>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
